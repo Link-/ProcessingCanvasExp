@@ -15,6 +15,7 @@ After running index.html or the PDE:
 	<li>'s': Increase Speed of flocking</li>
 	<li>'d': Decrease Speed of flocking</li>
 	<li>'c': Change color of particles</li>
+	<li>'`': Toggle Console</li>
 </ul>
 
 <h2>Requirements</h2>

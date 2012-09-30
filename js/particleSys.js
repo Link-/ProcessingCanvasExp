@@ -230,6 +230,7 @@ class ParticleSystem
  */
 ParticleSystem pSys;
 PVector fDirection;
+boolean ConsoleDisplay = true;
 
 /**
  * Core
@@ -259,6 +260,15 @@ void draw()
   else
   {
     pSys.RenderSystem();
+  }
+
+  // Debugging console
+  if (ConsoleDisplay)
+  { 
+      // Regular jquery nothing fancy
+      $("#frameRate").html("FrameRate: " + frameRate);
+      $("#pCount").html("Particles Count: " + pSys.GetCount());
+      $("#speedVal").html("Particles Speed: " + pSys.Speed);
   }
 }
 
@@ -297,5 +307,15 @@ void keyPressed()
   if (key == 'c')
   {
       pSys.NewColorRatio(int(random() * 255));
+  }
+  if (key == '`')
+  {
+      if (ConsoleDisplay)
+          $("#console").hide(100);
+      else
+          $("#console").show(100);
+
+      // Toggle the boolean
+      ConsoleDisplay = !ConsoleDisplay;
   }
 }
