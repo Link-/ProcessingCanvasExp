@@ -8,6 +8,6 @@ Feel free to use this code in whichever way you see fit.
 
 <h2>Requirements</h2>
 <ul>
-  <li>The content of the <b>PDE</b> folder require Processing v1.2+</li>
+  <li>The content of the <b>PDEs</b> folder require Processing v1.2+</li>
   <li>The rest should be regular HTML\Javascript code, any HTML5 enabled browser would do</li>
 </ul>
