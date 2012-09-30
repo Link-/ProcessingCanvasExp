@@ -236,7 +236,7 @@ PVector fDirection;
  */
 void setup() 
 {
-  size(800, 800);
+  size($(document).width() - 5, $(document).height() - 5);
 
   background(0);
   smooth();
@@ -275,10 +275,16 @@ void keyPressed()
   if (keyCode == UP)
   {
       pSys.AddParticle();
+
+      // Debugging
+      console.log("New Count: " + pSys.GetCount());
   }
   if (keyCode == DOWN)
   {
       pSys.RemoveParticle();
+
+      // Debugging
+      console.log("New Count: " + pSys.GetCount());
   }
   if (key == 's')
   {
