@@ -1,3 +1,10 @@
+/***
+ * Particle System Study 1
+ * Perlin Noise Experiment
+ * @author: BassemDy
+ * @website: http://bassemdy.com
+ **/
+
 /**
  * Particle class
  * encapsulates the particle 
@@ -5,63 +12,92 @@
  */
 class Particle
 {
-	PVector Position;															// Position vector
-  	PVector Velocity 		  = new PVector(0,0);									// Velocity vector
-  	PVector Acceleration 	= new PVector(0,0);									// Acceleration vector
-  	int ParticleLife;															// in Frames
+  PVector Position;                           			// Position vector
+	PVector Velocity 		  = new PVector(0,0);					// Velocity vector
+	PVector Acceleration 	= new PVector(0,0);					// Acceleration vector
+	int ParticleLife;															    // in Frames
 
-  	boolean jitteryParticle;													// Specifies if the particle jitters or not
+	boolean jitteryParticle;													// Specifies if the particle jitters or not
 
-  	// Public Constructor
-  	Particle(int splice, int life, boolean jitter)
+	// Public Constructor
+	Particle(int splice, int life, boolean jitter)
+	{
+		ParticleLife 		  = life;
+		jitteryParticle 	= jitter;
+		Position 			    = new PVector(random(width), random(height), splice);
+	}
+
+	// Rendering method
+	void render(float speed, int colr, boolean bGlow)
+	{
+    // Get the new positions
+		float x = noise(Position.x, Position.y, Position.z) * width;
+  	float y = noise(Position.x, Position.y, 1000 - Position.z) * height;
+
+  	PVector tmp = new PVector(x, y);
+  	PVector Acceleration = PVector.sub(tmp, Position);
+
+  	Acceleration.normalize();
+  	// Acceleration.mult(.2);
+  	Velocity.add(Acceleration); 
+  	Velocity.limit(speed);
+  	Position.add(Velocity);
+
+  	// If glowing is true, draw the glowing ellipse
+  	if (bGlow) 
   	{
-  		ParticleLife 		  = life;
-  		jitteryParticle 	= jitter;
-  		Position 			    = new PVector(random(width), random(height), splice);
-  	}
+    		noStroke();
+    		fill(colr, 255, 255, 15);
+    		ellipse(Position.x, Position.y, 14, 14);
+    }
 
+    // Draw the particle
+    stroke(colr, 255, 255);   
+  	ellipse(Position.x, Position.y, 1, 1);
 
-  	// Rendering method
-  	void render(float speed, int colr, boolean bGlow)
-  	{
-  		if (isDead())
-  			return;
+		// Diminish the particle's life
+	  ParticleLife--;
+	}
 
-  		float x = noise(Position.x, Position.y, Position.z) * width;
-    	float y = noise(Position.x, Position.y, 1000 - Position.z) * height;
+  // Rendering method overloaded to allow directional movement
+  void render(PVector fDirection, float speed, int colr, boolean bGlow)
+  {
+    // Get the new positions
+    float x = noise(Position.x, Position.y, Position.z) * fDirection.x * 2;           // To have an accurate position we multiply by 2
+    float y = noise(Position.x, Position.y, 1000 - Position.z) * fDirection.y * 2;    // To have an accurate position we multiply by 2
 
-    	PVector tmp = new PVector(x, y);
-    	PVector Acceleration = PVector.sub(tmp, Position);
+    PVector tmp = new PVector(x, y);
+    PVector Acceleration = PVector.sub(tmp, Position);
 
-    	Acceleration.normalize();
-    	// Acceleration.mult(.2);
-    	Velocity.add(Acceleration); 
-    	Velocity.limit(speed);
-    	Position.add(Velocity);
+    Acceleration.normalize();
+    Velocity.add(Acceleration);
+    Velocity.limit(speed);
+    Position.add(Velocity);
 
-    	// If glowing is true, draw the glowing ellipse
-    	if(bGlow) 
-    	{
-      		noStroke();
-      		fill(colr, 255, 255, 5);
-      		ellipse(Position.x + 100, Position.y, 10, 10);
-	    }
+    // If glowing is true, draw the glowing ellipse
+    if (bGlow) 
+    {
+        noStroke();
+        fill(colr, 255, 255, 15);
+        ellipse(Position.x, Position.y, 14, 14);
+    }
 
-	    stroke(colr, 255, 255);   
-    	point(Position.x + 100, Position.y);
+    // Draw the particle
+    stroke(colr, 255, 255);   
+    ellipse(Position.x, Position.y, 1, 1);
 
-  		// Diminish the particle's life
-		ParticleLife--;
-  	}
+    // Diminish the particle's life
+    ParticleLife--;
+  }
 
-  	// Dead checker
-  	boolean isDead()
-  	{
-		if (ParticleLife < 0)
-			return true;
+	// Dead checker
+	boolean isDead()
+	{
+    if (ParticleLife < 0)
+    	return true;
 
-		return false;
-  	}
+    return false;
+	}
 }
 
 /**
@@ -69,35 +105,116 @@ class Particle
  * This object is responsible for all
  * it's particles, motion, and life
  */
-int maxCnt;
-int halfH, halfW;
-float slice;
-Particle p[];
+class ParticleSystem
+{
+  int ParticleCount;
+  int LifeMax;
+  int ColorRatio;
+  int Speed;
+  int Splice;
+  ArrayList Particles;
 
+  // Public constructor
+  ParticleSystem(int pCount, int lifeMax, int splice, int speed, int colr)
+  {
+    ParticleCount = pCount;
+    LifeMax = lifeMax;
+    Splice = splice;
+    Speed = speed;
+    ColorRatio = colr;
+
+    Particles = new ArrayList(ParticleCount);
+  }
+
+
+  // Generate the system
+  void GenerateSystem()
+  {
+    // Remove all elements
+    if (Particles != null)
+      Particles.clear();
+
+    // Add the particles again
+    for (int i = 0; i < ParticleCount; i++)
+    {
+        Particles.add(new Particle(Splice, int(random(10, LifeMax)), true));
+    }
+  }
+
+
+  // Render the system
+  void RenderSystem()
+  {
+    // Add the particles again
+    for (int i = 0; i < Particles.size(); i++)
+    {
+      Particle cP = (Particle)Particles.get(i);
+
+      if (cP.isDead())
+        Particles.remove(i);
+
+      // Render the particles
+      cP.render(Speed, ColorRatio, true);
+    }
+  }
+
+  // Render the system
+  void RenderSystem(PVector fDirection)
+  {
+    // Add the particles again
+    for (int i = 0; i < Particles.size(); i++)
+    {
+      Particle cP = (Particle)Particles.get(i);
+
+      if (cP.isDead())
+        Particles.remove(i);
+
+      // Render the particles
+      cP.render(fDirection, Speed, ColorRatio, true);
+    }
+  }
+}
+
+
+/**
+ * Public Declarations
+ */
+ParticleSystem pSys;
+PVector fDirection;
+
+/**
+ * Core
+ */
 void setup() 
 {
-    size(800, 800);
+  size(800, 800);
 
-    background(0);
-    smooth();
-    colorMode(HSB);
+  background(0);
+  smooth();
+  colorMode(HSB);
 
-    //setup particles
-    maxCnt = 1000;
-    slice = random(1000);
-    p = new Particle[maxCnt];
-
-    for (int i=0; i<maxCnt; i++)
-        p[i] = new Particle(int(slice), int(random(0, 1000)), false);
+  // Init particle system
+  pSys = new ParticleSystem(1000, 1000, 400, 15, int(0.68 * 255));
+  pSys.GenerateSystem();
 }
  
 void draw() 
 {
-    background(0);
-   
-    //check particles
-    for (int i=0; i<maxCnt; i++)
-    {
-        p[i].render(20, int(1.25*255), true);
-    }
+  background(0);
+  
+  if (fDirection != null)
+  {
+    // println("Rendering with Direction: " + fDirection);
+    pSys.RenderSystem(fDirection);
+  }
+  else
+  {
+    pSys.RenderSystem();
+  }
+}
+
+// Mouse press event handling
+void mousePressed()
+{
+  fDirection = new PVector(mouseX, mouseY);
 }
