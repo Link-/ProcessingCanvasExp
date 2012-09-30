@@ -6,6 +6,17 @@ quickly written code, some of is well documented, the rest might be spaghetti.
 <h2>Usage</h2>
 Feel free to use this code in whichever way you see fit.
 
+<h4>Keyboard</h4>
+After running index.html or the PDE:
+<ul>
+	<li>Mouse Click: Changes the flocking center point to new mouse position\coordinates</li>
+	<li>UP: Add a Particle</li>
+	<li>DOWN: Remove a Particle</li>
+	<li>'s': Increase Speed of flocking</li>
+	<li>'d': Decrease Speed of flocking</li>
+	<li>'c': Change color of particles</li>
+</ul>
+
 <h2>Requirements</h2>
 <ul>
   <li>The content of the <b>PDEs</b> folder require Processing v1.2+</li>

@@ -290,6 +290,6 @@ void keyPressed()
   }
   if (key == 'c')
   {
-      pSys.NewColorRatio(int(random() * 255));
+      pSys.NewColorRatio(int(random(1) * 255));
   }
 }
