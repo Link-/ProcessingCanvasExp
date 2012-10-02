@@ -4,7 +4,7 @@ This repo is intended to contain my personal experiments with Processing.js, HTM
 quickly written code, some of is well documented, the rest might be spaghetti.
 
 <h2>Demo</h2>
-A demo can be found here: <a href="bassemdy.com/experiments/psys1/index.html" target="_blank">Demo Link</a>
+A demo can be found here: <a href="http://bassemdy.com/experiments/psys1/index.html" target="_blank">Demo Link</a>
 
 <h2>Usage</h2>
 Feel free to use this code in whichever way you see fit.
