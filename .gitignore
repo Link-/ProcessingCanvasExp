@@ -161,3 +161,6 @@
 -
 -# Mac crap
 -.DS_Store
+
+-# Audio
+*.mp3
