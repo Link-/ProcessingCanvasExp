@@ -23,9 +23,9 @@ class Particle
   // Public Constructor
   Particle(int splice, int life, boolean jitter, boolean decay)
   {
-    ParticleLife 		  = life;
-    jitteryParticle 	= jitter;
-    Position 			    = new PVector(random(width), random(height), splice);
+    ParticleLife      = life;
+    jitteryParticle   = jitter;
+    Position          = new PVector(random(width), random(height), splice);
     Decay             = decay;
   }
 
