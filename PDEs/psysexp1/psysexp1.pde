@@ -12,13 +12,13 @@
  */
 class Particle
 {
-  PVector Position;                           			// Position vector
-  PVector Velocity 		  = new PVector(0,0);					// Velocity vector
-  PVector Acceleration 	= new PVector(0,0);					// Acceleration vector
-  int ParticleLife;															    // in Frames
+  PVector Position;                                 // Position vector
+  PVector Velocity      = new PVector(0,0);         // Velocity vector
+  PVector Acceleration  = new PVector(0,0);					// Acceleration vector
+  int ParticleLife;                                 // in Frames
   boolean Decay;                                    // Choose if particles die or not
 
-  boolean jitteryParticle;													// Specifies if the particle jitters or not
+  boolean jitteryParticle;                           // Specifies if the particle jitters or not
 
   // Public Constructor
   Particle(int splice, int life, boolean jitter, boolean decay)
