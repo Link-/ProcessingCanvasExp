@@ -13,55 +13,55 @@
 class Particle
 {
   PVector Position;                           			// Position vector
-	PVector Velocity 		  = new PVector(0,0);					// Velocity vector
-	PVector Acceleration 	= new PVector(0,0);					// Acceleration vector
-	int ParticleLife;															    // in Frames
+  PVector Velocity 		  = new PVector(0,0);					// Velocity vector
+  PVector Acceleration 	= new PVector(0,0);					// Acceleration vector
+  int ParticleLife;															    // in Frames
   boolean Decay;                                    // Choose if particles die or not
 
-	boolean jitteryParticle;													// Specifies if the particle jitters or not
+  boolean jitteryParticle;													// Specifies if the particle jitters or not
 
-	// Public Constructor
-	Particle(int splice, int life, boolean jitter, boolean decay)
-	{
-		ParticleLife 		  = life;
-		jitteryParticle 	= jitter;
-		Position 			    = new PVector(random(width), random(height), splice);
+  // Public Constructor
+  Particle(int splice, int life, boolean jitter, boolean decay)
+  {
+    ParticleLife 		  = life;
+    jitteryParticle 	= jitter;
+    Position 			    = new PVector(random(width), random(height), splice);
     Decay             = decay;
-	}
+  }
 
-	// Rendering method
-	void render(float speed, int colr, boolean bGlow)
-	{
+  // Rendering method
+  void render(float speed, int colr, boolean bGlow)
+  {
     // Get the new positions
-		float x = noise(Position.x, Position.y, Position.z) * width;
-  	float y = noise(Position.x, Position.y, 1000 - Position.z) * height;
+    float x = noise(Position.x, Position.y, Position.z) * width;
+    float y = noise(Position.x, Position.y, 1000 - Position.z) * height;
 
-  	PVector tmp = new PVector(x, y);
-  	PVector Acceleration = PVector.sub(tmp, Position);
+    PVector tmp = new PVector(x, y);
+    PVector Acceleration = PVector.sub(tmp, Position);
 
-  	Acceleration.normalize();
-  	// Acceleration.mult(.2);
-  	Velocity.add(Acceleration); 
-  	Velocity.limit(speed);
-  	Position.add(Velocity);
+    Acceleration.normalize();
+    // Acceleration.mult(.2);
+    Velocity.add(Acceleration); 
+    Velocity.limit(speed);
+    Position.add(Velocity);
 
-  	// If glowing is true, draw the glowing ellipse
-  	if (bGlow) 
-  	{
-    		noStroke();
-    		fill(colr, 255, 255, 15);
-    		ellipse(Position.x, Position.y, 14, 14);
+    // If glowing is true, draw the glowing ellipse
+    if (bGlow) 
+    {
+        noStroke();
+        fill(colr, 255, 255, 15);
+        ellipse(Position.x, Position.y, 14, 14);
     }
 
     // Draw the particle
     stroke(colr, 255, 255);   
-  	ellipse(Position.x, Position.y, 1, 1);
+    ellipse(Position.x, Position.y, 1, 1);
 
-		// Diminish the particle's life
+    // Diminish the particle's life
     // if the system can decay
     if (Decay)
       ParticleLife--;
-	}
+  }
 
   // Rendering method overloaded to allow directional movement
   void render(PVector fDirection, float speed, int colr, boolean bGlow)
@@ -96,14 +96,14 @@ class Particle
       ParticleLife--;
   }
 
-	// Dead checker
-	boolean isDead()
-	{
+  // Dead checker
+  boolean isDead()
+  {
     if (ParticleLife < 0)
-    	return true;
+      return true;
 
     return false;
-	}
+  }
 }
 
 /**
@@ -143,7 +143,7 @@ class ParticleSystem
     // Add the particles again
     for (int i = 0; i < ParticleCount; i++)
     {
-        Particles.add(new Particle(Splice, int(random(10, LifeMax)), true, false));
+      Particles.add(new Particle(Splice, int(random(10, LifeMax)), true, false));
     }
   }
 
@@ -201,13 +201,13 @@ class ParticleSystem
   // system
   int GetCount()
   {
-     return Particles.size();
+    return Particles.size();
   }
 
   // Increase speed by 1
   void IncreaseSpeed()
   {
-     Speed++;
+    Speed++;
   }
 
   // Decrease speed by 1
@@ -220,7 +220,7 @@ class ParticleSystem
   // New color set
   void NewColorRatio(int colr)
   {
-      ColorRatio = colr;
+    ColorRatio = colr;
   }
 }
 
@@ -274,22 +274,22 @@ void keyPressed()
   // When pressing up, add particles
   if (keyCode == UP)
   {
-      pSys.AddParticle();
+    pSys.AddParticle();
   }
   if (keyCode == DOWN)
   {
-      pSys.RemoveParticle();
+    pSys.RemoveParticle();
   }
   if (key == 's')
   {
-      pSys.IncreaseSpeed();
+    pSys.IncreaseSpeed();
   }
   if (key == 'd')
   {
-      pSys.DecreaseSpeed();
+    pSys.DecreaseSpeed();
   }
   if (key == 'c')
   {
-      pSys.NewColorRatio(int(random(1) * 255));
+    pSys.NewColorRatio(int(random(1) * 255));
   }
 }
